@@ -1,0 +1,19 @@
+{{extend 'layout.html'}}
+<script src="{{=URL('static','angular/controller_angular.js')}}"></script>
+<script>
+demoAngular.controller('demoAngularCtrl', function($scope, $http) {
+    $scope.taskList = {{=XML(task_list)}};
+});
+</script>
+<div class="container" ng-app='demoAngular'>
+   <div class="row" ng-controller='demoAngularCtrl'>
+     <div class="col-xs-12">
+         <h2>Tasks</h2>
+            <ul>
+               <li ng-repeat='tasks in taskList track by $index'>
+                   {[{tasks.name}]}
+              </li>
+            </ul>
+     </div>
+  </div>
+</div>

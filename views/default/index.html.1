@@ -1,0 +1,27 @@
+{{extend 'layout.html'}}
+<script>
+    //Note AngularJS code is included within the layout
+var demoAngular = angular.module('demoAngular', []);
+
+demoAngular.config(function($interpolateProvider) {
+    //allow Web2py views and Angular to co-exist
+    $interpolateProvider.startSymbol('{[{');
+    $interpolateProvider.endSymbol('}]}');
+});
+
+demoAngular.controller('demoAngularCtrl', function($scope, $http) {
+    $scope.taskList = JSON.parse({{=task_list}});
+});
+</script>
+<div class="container" ng-app='demoAngular'>
+   <div class="row" ng-controller='demoAngularCtrl'>
+     <div class="col-xs-12">
+         <h2>Tasks</h2>
+            <ul>
+               <li ng-repeat='tasks in taskList track by $index'>
+                   {[{tasks}]}
+              </li>
+            </ul>
+     </div>
+  </div>
+</div>
