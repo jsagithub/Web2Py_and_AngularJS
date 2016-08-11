@@ -13,7 +13,7 @@ pass
 db.define_table('task',
     Field('name', type='text'),       
     Field('limit_date', type='datetime'), 
-    Field('activity', type='boolean'), 
+    Field('priority_id', db.task_priority), 
     auth.signature
 )
 

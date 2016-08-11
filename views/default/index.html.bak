@@ -11,9 +11,10 @@ demoAngular.controller('demoAngularCtrl', function($scope, $http) {
          <h2>Tasks</h2>
             <ul>
                <li ng-repeat='tasks in taskList track by $index'>
-                   {[{tasks}]}
+                   {[{tasks.name}]}
               </li>
             </ul>
+         {{=SQLFORM(db.task).process()}}
      </div>
   </div>
 </div>

@@ -11,9 +11,9 @@ if db(db.task_priority).count() == 0:
     db.task_priority.insert(priority='When you feel good', css_class='label-default', days='0')        
 pass    
 db.define_table('task',
-    Field('task', type='text'),       
+    Field('name', type='text'),       
     Field('limit_date', type='datetime'), 
-    Field('activity', type='boolean'), 
+    Field('priority_id', db.task_priority), 
     auth.signature
 )
 

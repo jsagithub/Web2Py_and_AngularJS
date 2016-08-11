@@ -2,18 +2,61 @@
 <script src="{{=URL('static','angular/controller_angular.js')}}"></script>
 <script>
 demoAngular.controller('demoAngularCtrl', function($scope, $http) {
+  
     $scope.taskList = {{=XML(task_list)}};
+    $scope.newTask = {'task_list':[]};
+
+    $scope.saveTask = function(){
+            //Save to database
+            $http.put('{{=URL('default','add_task')}}', $scope.newTask)
+            .success(function(data, status) {              
+                $scope.taskList.push(data.newTask); //add the new Task to the Task list
+                $scope.showAddTask = false; //hide the add Task form
+                $scope.newTask = {'task_list':[]}; //reset the new recipe
+            }).error(function(data, status) {
+              console.log(data.newTask);
+                $scope.errorMessage = 'Save Task Failed'; //set error message
+            });
+        };   
 });
 </script>
 <div class="container" ng-app='demoAngular'>
    <div class="row" ng-controller='demoAngularCtrl'>
+     <!-- Show Errors Messages-->
+     <div ng-show='errorMessage'>
+            <h3>Error Message</h3>
+            <p>{[{errorMessage}]}</p>
+            <p ng-click='errorMessage=""'>Click here to clear error message.</p>
+     </div>
+     <!-- End Show Errors-->
      <div class="col-xs-12">
+        <!-- Sow Tasks -->
          <h2>Tasks</h2>
             <ul>
                <li ng-repeat='tasks in taskList track by $index'>
                    {[{tasks.name}]}
               </li>
             </ul>
+        <!-- End Show Task -->
+        <div><button ng-hide='showAddTask' ng-click='showAddTask = true'>Add a Task</button></div>
+        <div ng-show='showAddTask'>
+           <h3>Add Task</h3>
+           <div>newTask: {[{newTask}]}</div>
+           <!-- Form Add new Task -->
+           <div>
+              <div><input type='text' ng-model='newTask.name' placeholder='Task'></div>
+              <div><input type='text' class="form-control datetime" ng-model='newTask.limitdate' placeholder='Limit Date'></div>
+
+              <!-- Need to be a SelectBox -->
+              <div><input type='text' ng-model='newTask.priority' placeholder='Priority'></div>
+              <!-- --------------------------------- -->
+
+              <!-- this can be saved on writing? -->
+              <button ng-click='saveTask()'>Save Task</button>
+              <!-- --------------------------------- -->
+           </div>
+           <!-- End Form Add new Task -->
+        </div>
      </div>
   </div>
 </div>

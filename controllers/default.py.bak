@@ -10,23 +10,29 @@
 
 import gluon.contrib.simplejson
 
-def index():
+def get_tasks(rows):
     """
     cant use this function
             def index():
             rows = db(db.recipe).select().as_list()
             return dict(recipe_list=gluon.contrib.simplejson.dumps(rows))
-    at the simple way because im using fields datetime in th database :(
-    
+    at the simple way because im using fields datetime in th database :(    
     """
-    rows = db(db.task).select()
     lista = list()
-    for r in rows:
+    for row in rows:
         arr = dict()
-        arr['name'] = r.name
-        arr['created_on'] = str(r.created_on)
+        for k,v in row.items():
+            arr[k] = str(v)
         lista.append(arr)
     return dict(task_list=gluon.contrib.simplejson.dumps(lista))
+
+def index():
+    rows = db(db.task).select()
+    return get_tasks(rows)
+
+def create():
+    form=SQLFORM(db.task).process()
+    return locals()
 
 def user():
     """
